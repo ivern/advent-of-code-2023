@@ -2,11 +2,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+@SuppressWarnings("unused")
 public class Puzzle4 {
 
-    public int solve() throws IOException {
+    public int solve() {
         try (var lines = Files.lines(Paths.get("./input/puzzle4.txt"))) {
             return lines.mapToInt(this::getGamePower).sum();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

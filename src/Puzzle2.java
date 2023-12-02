@@ -3,11 +3,14 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+@SuppressWarnings("unused")
 public class Puzzle2 {
 
-    public int solve() throws IOException {
+    public int solve() {
         try (var lines = Files.lines(Paths.get("./input/puzzle2.txt"))) {
             return lines.mapToInt(this::getOriginalNumber).sum();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
