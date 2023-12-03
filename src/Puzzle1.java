@@ -6,7 +6,7 @@ import java.nio.file.Paths;
 public class Puzzle1 {
 
     public int solve() {
-        try (var lines = Files.lines(Paths.get("./input/puzzle1.txt"))) {
+        try (var lines = Files.lines(Paths.get("./data/day1.txt"))) {
             return lines.mapToInt(this::getOriginalNumber).sum();
         } catch (IOException e) {
             throw new RuntimeException(e);

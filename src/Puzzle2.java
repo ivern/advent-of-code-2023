@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class Puzzle2 {
 
     public int solve() {
-        try (var lines = Files.lines(Paths.get("./input/puzzle2.txt"))) {
+        try (var lines = Files.lines(Paths.get("./data/day1.txt"))) {
             return lines.mapToInt(this::getOriginalNumber).sum();
         } catch (IOException e) {
             throw new RuntimeException(e);
