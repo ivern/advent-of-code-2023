@@ -14,7 +14,11 @@ public class Main {
             T instance = klass.getDeclaredConstructor().newInstance();
             Method solver = klass.getMethod("solve");
 
-            System.out.println(klass.getName() + ": " + solver.invoke(instance));
+            long start = System.nanoTime();
+            Object result = solver.invoke(instance);
+            long end = System.nanoTime();
+
+            System.out.println(klass.getName() + ": " + result + " (" + ((end - start) / 1_000_000.0) + "ms)");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
