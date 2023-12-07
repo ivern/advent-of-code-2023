@@ -13,8 +13,7 @@ public class Encoder {
         this.encodingDictionary = new HashMap<>();
 
         for (int i = 0; i < symbols.length(); ++i) {
-            char c = symbols.charAt(i);
-            this.encodingDictionary.put(c, i);
+            this.encodingDictionary.put(symbols.charAt(i), i);
         }
     }
 
