@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class Counter<T> {
 
@@ -27,7 +28,7 @@ public class Counter<T> {
     }
 
     public void increment(T key) {
-        counts.merge(key, 1, Integer::sum);
+        increment(key, 1);
     }
 
     public void increment(T key, int step) {
@@ -35,7 +36,7 @@ public class Counter<T> {
     }
 
     public void decrement(T key) {
-        counts.merge(key, -1, Integer::sum);
+        decrement(key, 1);
     }
 
     public void decrement(T key, int step) {
@@ -72,6 +73,26 @@ public class Counter<T> {
         var entries = new ArrayList<>(counts.entrySet());
         entries.sort(COMPARATOR.reversed());
         return entries;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Counter<?> counter = (Counter<?>) o;
+        return Objects.equals(counts, counter.counts);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(counts);
+    }
+
+    @Override
+    public String toString() {
+        return "Counter{" +
+                "counts=" + counts +
+                '}';
     }
 
 }
