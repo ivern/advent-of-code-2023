@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 @SuppressWarnings("unused")
 public class Puzzle12 {
 
-    public BigInteger solve() {
+    public long solve() {
         try (var linesStream = Files.lines(Paths.get("./data/day6.txt"))) {
             var lines = linesStream.toList();
 
@@ -27,13 +27,13 @@ public class Puzzle12 {
         }
     }
 
-    private BigInteger numWays(long time, BigInteger record) {
-        BigInteger numWays = BigInteger.ZERO;
+    private long numWays(long time, BigInteger record) {
+        long numWays = 0;
 
         for (long hold = 1; hold < time; ++hold) {
             BigInteger distance = BigInteger.valueOf(time - hold).multiply(BigInteger.valueOf(hold));
             if (distance.compareTo(record) > 0) {
-                numWays = numWays.add(BigInteger.ONE);
+                ++numWays;
             }
         }
 
