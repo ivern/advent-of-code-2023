@@ -88,7 +88,7 @@ public class Puzzle13 {
         return value;
     }
 
-        public record Input(String hand, int bid, long score) {
-        }
-
+    public record Input(String hand, int bid, long score) {
     }
+
+}

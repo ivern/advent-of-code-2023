@@ -35,7 +35,7 @@ public class Puzzle14 {
     }
 
     long getScore(String hand) {
-        long handType = Arrays.stream(new Character[] {'A', 'K', 'Q', 'T', '9', '8', '7', '6', '5', '4', '3', '2', 'J'})
+        long handType = Arrays.stream(new Character[]{'A', 'K', 'Q', 'T', '9', '8', '7', '6', '5', '4', '3', '2', 'J'})
                 .mapToLong(wildIs -> getHandType(hand, wildIs))
                 .max()
                 .orElseThrow();
@@ -95,7 +95,7 @@ public class Puzzle14 {
         return value;
     }
 
-        public record Input(String hand, int bid, long score) {
-        }
-
+    public record Input(String hand, int bid, long score) {
     }
+
+}
