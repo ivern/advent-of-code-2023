@@ -2,6 +2,7 @@ package util;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,19 +16,7 @@ public class MathUtil {
     }
 
     public static int gcd(int a, int b) {
-        if (a == 0 || b == 0) {
-            return 0;
-        }
-
-        int remainder;
-
-        do {
-            remainder = a % b;
-            a = b;
-            b = remainder;
-        } while (remainder > 0);
-
-        return a;
+        return (int) gcd(a, (long) b);
     }
 
     public static long gcd(long a, long b) {
@@ -47,11 +36,11 @@ public class MathUtil {
     }
 
     public static int lcm(int a, int b) {
-        if (a == 0 || b == 0) {
-            return 0;
+        long result = lcm(a, (long) b);
+        if (result > Integer.MAX_VALUE) {
+            throw new RuntimeException("lcm(" + a + ", " + b + ") does not fit in an int, use longs instead");
         }
-
-        return abs(a * b) / gcd(a, b);
+        return (int) result;
     }
 
     public static long lcm(long a, long b) {
@@ -60,6 +49,20 @@ public class MathUtil {
         }
 
         return abs(a * b) / gcd(a, b);
+    }
+
+    public static int lcm(int[] ns) {
+        long[] longNs = new long[ns.length];
+        for (int i = 0; i < ns.length; ++i) {
+            longNs[i] = ns[i];
+        }
+
+        long result = lcm(longNs);
+        if (result > Integer.MAX_VALUE) {
+            throw new RuntimeException("lcm(" + Arrays.toString(ns) + ") does not fit in an int, use longs instead");
+        }
+        
+        return (int) result;
     }
 
     public static long lcm(long[] ns) {
