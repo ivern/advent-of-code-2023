@@ -25,22 +25,17 @@ public class Puzzle16 {
 
         boolean keepGoing = true;
         String[] current = network.keySet().stream().filter(s -> s.endsWith("A")).toArray(String[]::new);
-        int[] cycleLength = new int[current.length];
+        long[] cycleLength = new long[current.length];
         Arrays.fill(cycleLength, 0);
 
         for (int i = 0; i < current.length; ++i) {
             while (!current[i].endsWith("Z")) {
-                char move = route.charAt(cycleLength[i]++ % route.length());
+                char move = route.charAt((int) (cycleLength[i]++ % route.length()));
                 current[i] = (move == 'L') ? network.get(current[i]).left() : network.get(current[i]).right();
             }
         }
 
-        long steps = cycleLength[0];
-        for (int i = 1; i < cycleLength.length; ++i) {
-            steps = MathUtil.lcm(cycleLength[i], steps);
-        }
-
-        return steps;
+        return MathUtil.lcm(cycleLength);
     }
 
     private record Branch(String left, String right) {

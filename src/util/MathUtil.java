@@ -62,6 +62,14 @@ public class MathUtil {
         return abs(a * b) / gcd(a, b);
     }
 
+    public static long lcm(long[] ns) {
+        long result = ns[0];
+        for (int i = 1; i < ns.length; ++i) {
+            result = lcm(ns[i], result);
+        }
+        return result;
+    }
+
     public static @NotNull Map<Integer, Integer> factors(int n) {
         var result = new HashMap<Integer, Integer>();
         var max = ceil(sqrt(n));
