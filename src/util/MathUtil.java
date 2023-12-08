@@ -30,6 +30,22 @@ public class MathUtil {
         return a;
     }
 
+    public static long gcd(long a, long b) {
+        if (a == 0 || b == 0) {
+            return 0;
+        }
+
+        long remainder;
+
+        do {
+            remainder = a % b;
+            a = b;
+            b = remainder;
+        } while (remainder > 0);
+
+        return a;
+    }
+
     public static int lcm(int a, int b) {
         if (a == 0 || b == 0) {
             return 0;

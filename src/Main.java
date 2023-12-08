@@ -20,7 +20,7 @@ public class Main {
 
             System.out.println(klass.getName() + ": " + result + " (" + ((end - start) / 1_000_000.0) + "ms)");
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
