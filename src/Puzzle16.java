@@ -23,7 +23,6 @@ public class Puzzle16 {
             network.put(parts[0].trim(), new Branch(next[0].trim(), next[1].trim()));
         }
 
-        boolean keepGoing = true;
         String[] current = network.keySet().stream().filter(s -> s.endsWith("A")).toArray(String[]::new);
         long[] cycleLength = new long[current.length];
         Arrays.fill(cycleLength, 0);
