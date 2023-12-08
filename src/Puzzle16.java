@@ -37,7 +37,7 @@ public class Puzzle16 {
 
         long steps = cycleLength[0];
         for (int i = 1; i < cycleLength.length; ++i) {
-            steps = (((cycleLength[i] * steps)) / MathUtil.gcd(cycleLength[i], steps));
+            steps = MathUtil.lcm(cycleLength[i], steps);
         }
 
         return steps;

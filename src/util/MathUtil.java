@@ -54,6 +54,14 @@ public class MathUtil {
         return abs(a * b) / gcd(a, b);
     }
 
+    public static long lcm(long a, long b) {
+        if (a == 0 || b == 0) {
+            return 0;
+        }
+
+        return abs(a * b) / gcd(a, b);
+    }
+
     public static @NotNull Map<Integer, Integer> factors(int n) {
         var result = new HashMap<Integer, Integer>();
         var max = ceil(sqrt(n));
