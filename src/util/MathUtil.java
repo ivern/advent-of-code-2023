@@ -61,7 +61,7 @@ public class MathUtil {
         if (result > Integer.MAX_VALUE) {
             throw new RuntimeException("lcm(" + Arrays.toString(ns) + ") does not fit in an int, use longs instead");
         }
-        
+
         return (int) result;
     }
 
