@@ -147,7 +147,35 @@ public class Puzzle20 {
         var cyclePos = cycle.stream().map(p -> new Pos(p.row, p.col, (char) 0)).collect(Collectors.toSet());
         tiles.removeIf(pos -> cyclePos.contains(pos) || !pos.isValid(numRows, numCols));
 
+        foodFill(cyclePos, numRows, numCols, tiles);
+
         return tiles;
+    }
+
+    private void foodFill(Set<Pos> cyclePos, int numRows, int numCols, Set<Pos> tiles) {
+        var newTiles = new HashSet<Pos>();
+        var seen = new HashSet<>(cyclePos);
+        seen.addAll(tiles);
+
+        for (var t : tiles) {
+            newTiles.addAll(floodfill(tiles, t, numRows, numCols, seen));
+        }
+
+        tiles.addAll(newTiles);
+    }
+
+    private Set<Pos> floodfill(Set<Pos> tiles, Pos pos, int numRows, int numCols, Set<Pos> seen) {
+        var newTiles = new HashSet<Pos>();
+
+        for (var p : new Pos[]{pos.n(), pos.s(), pos.e(), pos.w()}) {
+            if (!seen.contains(p) && p.isValid(numRows, numCols)) {
+                seen.add(p);
+                newTiles.add(p);
+                newTiles.addAll(floodfill(tiles, p, numRows, numCols, seen));
+            }
+        }
+
+        return newTiles;
     }
 
     CycleDirection findCycleDirection(List<Pos> cycle) {
