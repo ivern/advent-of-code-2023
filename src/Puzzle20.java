@@ -147,12 +147,12 @@ public class Puzzle20 {
         var cyclePos = cycle.stream().map(p -> new Pos(p.row, p.col, (char) 0)).collect(Collectors.toSet());
         tiles.removeIf(pos -> cyclePos.contains(pos) || !pos.isValid(numRows, numCols));
 
-        foodFill(cyclePos, numRows, numCols, tiles);
+        floodFill(cyclePos, numRows, numCols, tiles);
 
         return tiles;
     }
 
-    private void foodFill(Set<Pos> cyclePos, int numRows, int numCols, Set<Pos> tiles) {
+    private void floodFill(Set<Pos> cyclePos, int numRows, int numCols, Set<Pos> tiles) {
         var newTiles = new HashSet<Pos>();
         var seen = new HashSet<>(cyclePos);
         seen.addAll(tiles);
