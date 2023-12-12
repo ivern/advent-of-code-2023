@@ -58,6 +58,7 @@ public class Puzzle24 {
             if (s + run > springs.length()) {
                 break;
             }
+            
             boolean fits = true;
             for (int i = s; i < s + run && fits; ++i) {
                 if (springs.charAt(i) == '.') {
