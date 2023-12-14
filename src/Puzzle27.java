@@ -24,9 +24,9 @@ public class Puzzle27 {
             }
         }
 
-        print(platform, numRows, numCols);
+//        print(platform, numRows, numCols);
         tiltNorth(platform, numRows, numCols);
-        print(platform, numRows, numCols);
+//        print(platform, numRows, numCols);
 
         return northLoad(platform, numRows, numCols);
     }
