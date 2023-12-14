@@ -84,17 +84,10 @@ public class Puzzle28 {
     }
 
     long northLoad(DenseGrid<Character> platform) {
-        long load = 0;
-
-        for (int row = 0; row < platform.numRows(); ++row) {
-            for (int col = 0; col < platform.numCols(); ++col) {
-                if (platform.get(row, col) == 'O') {
-                    load += platform.numRows() - row;
-                }
-            }
-        }
-
-        return load;
+        return platform.mapReduce(
+                (grid, row, col) -> (platform.get(row, col) == 'O') ? platform.numRows() - row : 0L,
+                Long::sum,
+                0L);
     }
 
 }

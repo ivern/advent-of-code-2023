@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class DenseGrid<T> {
@@ -94,7 +95,7 @@ public class DenseGrid<T> {
     }
 
     public DenseGrid<T> transpose() {
-        var transposed = new DenseGrid<>(klass, numCols, numRows);
+        DenseGrid<T> transposed = new DenseGrid<>(klass, numCols, numRows);
 
         for (int row = 0; row < numRows; ++row) {
             for (int col = 0; col < numCols; ++col) {
@@ -103,6 +104,22 @@ public class DenseGrid<T> {
         }
 
         return transposed;
+    }
+
+    public <U> U mapReduce(Function<T, U> map, BiFunction<U, U, U> reduce, U initialValue) {
+        return mapReduce((grid, row, col) -> map.apply(grid.get(row, col)), reduce, initialValue);
+    }
+
+    public <U> U mapReduce(CellMapper<T, U> map, BiFunction<U, U, U> reduce, U initialValue) {
+        U result = initialValue;
+
+        for (int row = 0; row < numRows; ++row) {
+            for (int col = 0; col < numCols; ++col) {
+                result = reduce.apply(result, map.map(this, row, col));
+            }
+        }
+
+        return result;
     }
 
     @Override
@@ -139,6 +156,11 @@ public class DenseGrid<T> {
         }
 
         return builder.toString();
+    }
+
+    @FunctionalInterface
+    public interface CellMapper<T, U> {
+        U map(DenseGrid<T> grid, int row, int col);
     }
 
 }
