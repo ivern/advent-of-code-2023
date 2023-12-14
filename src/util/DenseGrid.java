@@ -201,6 +201,18 @@ public class DenseGrid<T> {
     }
 
     @Override
+    @SuppressWarnings("MethodDoesntCallSuperMethod")
+    public DenseGrid<T> clone() {
+        DenseGrid<T> clone = new DenseGrid<>(klass, numRows, numCols);
+
+        for (int row = 0; row < numRows; ++row) {
+            System.arraycopy(grid[row], 0, clone.grid[row], 0, numCols);
+        }
+
+        return clone;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
