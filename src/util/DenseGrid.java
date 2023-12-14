@@ -137,19 +137,26 @@ public class DenseGrid<T> {
     }
 
     public void floodFill(int row, int col, T value, CellPredicate<T> boundary) {
+        if (!contains(row, col)) {
+            return;
+        }
+
         Deque<Cell> fringe = new LinkedList<>();
         fringe.addLast(new Cell(row, col));
 
         while (!fringe.isEmpty()) {
             Cell next = fringe.getFirst();
-
-            if (!contains(next.row(), next.col()) || boundary.test(this, next.row(), next.col())) {
+            if (boundary.test(this, next.row(), next.col())) {
                 continue;
             }
 
             grid[next.row()][next.col()] = value;
-            fringe.addAll(mapCrossNeighbors(next.row(), next.col(), (_g, r, c) -> new Cell(r, c)));
+            fringe.addAll(crossNeighbors(next.row(), next.col()));
         }
+    }
+
+    public List<Cell> crossNeighbors(int row, int col) {
+        return mapCrossNeighbors(row, col, (_g, r, c) -> new Cell(r, c));
     }
 
     public <U> List<U> mapCrossNeighbors(int row, int col, CellMapper<T, U> mapper) {
@@ -159,10 +166,19 @@ public class DenseGrid<T> {
         final int[] dcol = new int[]{0, 1, 0, -1};
 
         for (int i = 0; i < 4; ++i) {
-            values.add(mapper.map(this, row + drow[i], col + dcol[i]));
+            int newRow = row + drow[i];
+            int newCol = col + dcol[i];
+
+            if (contains(newRow, newCol)) {
+                values.add(mapper.map(this, newRow, newCol));
+            }
         }
 
         return values;
+    }
+
+    public List<Cell> allNeighbors(int row, int col) {
+        return mapAllNeighbors(row, col, (_g, r, c) -> new Cell(r, c));
     }
 
     public <U> List<U> mapAllNeighbors(int row, int col, CellMapper<T, U> mapper) {
@@ -171,7 +187,12 @@ public class DenseGrid<T> {
         for (int dcol = -1; dcol <= 1; ++dcol) {
             for (int drow = -1; drow <= 1; ++drow) {
                 if (dcol != 0 || drow != 0) {
-                    values.add(mapper.map(this, row + drow, col + dcol));
+                    int newRow = row + drow;
+                    int newCol = col + dcol;
+
+                    if (contains(newRow, newCol)) {
+                        values.add(mapper.map(this, newRow, newCol));
+                    }
                 }
             }
         }
@@ -225,7 +246,7 @@ public class DenseGrid<T> {
         boolean test(DenseGrid<T> grid, int row, int col);
     }
 
-    private record Cell(int row, int col) {
+    public record Cell(int row, int col) {
     }
 
 }
