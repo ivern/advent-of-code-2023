@@ -5,6 +5,8 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BiFunction;
@@ -106,20 +108,75 @@ public class DenseGrid<T> {
         return transposed;
     }
 
-    public <U> U mapReduce(Function<T, U> map, BiFunction<U, U, U> reduce, U initialValue) {
-        return mapReduce((grid, row, col) -> map.apply(grid.get(row, col)), reduce, initialValue);
+    public <U> U mapReduce(Function<T, U> mapper, BiFunction<U, U, U> reducer, U initialValue) {
+        return mapReduce((grid, row, col) -> mapper.apply(grid.get(row, col)), reducer, initialValue);
     }
 
-    public <U> U mapReduce(CellMapper<T, U> map, BiFunction<U, U, U> reduce, U initialValue) {
+    public <U> U mapReduce(CellMapper<T, U> mapper, BiFunction<U, U, U> reducer, U initialValue) {
         U result = initialValue;
 
         for (int row = 0; row < numRows; ++row) {
             for (int col = 0; col < numCols; ++col) {
-                result = reduce.apply(result, map.map(this, row, col));
+                result = reducer.apply(result, mapper.map(this, row, col));
             }
         }
 
         return result;
+    }
+
+    public <U> DenseGrid<U> map(CellMapper<T, U> mapper, Class<U> newKlass) {
+        DenseGrid<U> newGrid = new DenseGrid<>(newKlass, numRows, numCols);
+
+        for (int row = 0; row < numRows; ++row) {
+            for (int col = 0; col < numCols; ++col) {
+                newGrid.grid[row][col] = mapper.map(this, row, col);
+            }
+        }
+
+        return newGrid;
+    }
+
+    public void floodFill(int row, int col, T value, CellPredicate<T> boundary) {
+        Deque<Cell> fringe = new LinkedList<>();
+        fringe.addLast(new Cell(row, col));
+
+        while (!fringe.isEmpty()) {
+            Cell next = fringe.getFirst();
+
+            if (!contains(next.row(), next.col()) || boundary.test(this, next.row(), next.col())) {
+                continue;
+            }
+
+            grid[next.row()][next.col()] = value;
+            fringe.addAll(mapCrossNeighbors(next.row(), next.col(), (_g, r, c) -> new Cell(r, c)));
+        }
+    }
+
+    public <U> List<U> mapCrossNeighbors(int row, int col, CellMapper<T, U> mapper) {
+        List<U> values = new ArrayList<>();
+
+        final int[] drow = new int[]{1, 0, -1, 0};
+        final int[] dcol = new int[]{0, 1, 0, -1};
+
+        for (int i = 0; i < 4; ++i) {
+            values.add(mapper.map(this, row + drow[i], col + dcol[i]));
+        }
+
+        return values;
+    }
+
+    public <U> List<U> mapAllNeighbors(int row, int col, CellMapper<T, U> mapper) {
+        List<U> values = new ArrayList<>();
+
+        for (int dcol = -1; dcol <= 1; ++dcol) {
+            for (int drow = -1; drow <= 1; ++drow) {
+                if (dcol != 0 || drow != 0) {
+                    values.add(mapper.map(this, row + drow, col + dcol));
+                }
+            }
+        }
+
+        return values;
     }
 
     @Override
@@ -161,6 +218,14 @@ public class DenseGrid<T> {
     @FunctionalInterface
     public interface CellMapper<T, U> {
         U map(DenseGrid<T> grid, int row, int col);
+    }
+
+    @FunctionalInterface
+    public interface CellPredicate<T> {
+        boolean test(DenseGrid<T> grid, int row, int col);
+    }
+
+    private record Cell(int row, int col) {
     }
 
 }
