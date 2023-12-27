@@ -5,8 +5,14 @@ import java.util.List;
 
 public class Main {
 
+    private static final boolean RUN_ALL = false;
+
     public static void main(String[] args) throws ClassNotFoundException {
-        findPuzzleSolutionsInOrder(new File("./src")).forEach(Main::solve);
+        if (RUN_ALL) {
+            findPuzzleSolutionsInOrder(new File("./src")).forEach(Main::solve);
+        } else {
+            solve(findPuzzleSolutionsInOrder(new File("./src")).getLast());
+        }
     }
 
     private static <T> void solve(Class<T> klass) {
