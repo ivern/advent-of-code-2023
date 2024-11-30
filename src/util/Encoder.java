@@ -1,7 +1,5 @@
 package util;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,7 +7,7 @@ public class Encoder {
 
     private final Map<Character, Integer> encodingDictionary;
 
-    public Encoder(@NotNull String symbols) {
+    public Encoder(String symbols) {
         this.encodingDictionary = new HashMap<>();
 
         for (int i = 0; i < symbols.length(); ++i) {
@@ -17,7 +15,7 @@ public class Encoder {
         }
     }
 
-    public long encode(@NotNull String value) {
+    public long encode(String value) {
         int radix = radix();
         long encoded = 0;
 

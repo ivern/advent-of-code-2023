@@ -1,7 +1,5 @@
 package util;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,7 +18,7 @@ public class DenseGrid<T> {
     private final int numCols;
 
     @SuppressWarnings("unchecked")
-    public DenseGrid(@NotNull Class<T> klass, int numRows, int numCols) {
+    public DenseGrid(Class<T> klass, int numRows, int numCols) {
         this.klass = klass;
         this.numRows = numRows;
         this.numCols = numCols;
@@ -39,11 +37,11 @@ public class DenseGrid<T> {
         }
     }
 
-    public static @NotNull List<DenseGrid<Character>> fromInput(List<String> data) {
+    public static List<DenseGrid<Character>> fromInput(List<String> data) {
         return fromInput(data, Character.class, Function.identity());
     }
 
-    public static <T> @NotNull List<DenseGrid<T>> fromInput(@NotNull List<String> data, Class<T> klass, Function<Character, T> valueFn) {
+    public static <T> List<DenseGrid<T>> fromInput(List<String> data, Class<T> klass, Function<Character, T> valueFn) {
         List<DenseGrid<T>> grids = new ArrayList<>();
         int nextLine = 0;
 

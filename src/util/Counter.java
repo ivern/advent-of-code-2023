@@ -1,7 +1,5 @@
 package util;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -19,7 +17,7 @@ public class Counter<T> {
         this.counts = new HashMap<>();
     }
 
-    public static @NotNull Counter<Character> countCharacters(@NotNull String string) {
+    public static Counter<Character> countCharacters(String string) {
         Counter<Character> counter = new Counter<>();
         for (Character c : string.toCharArray()) {
             counter.increment(c);

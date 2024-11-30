@@ -1,7 +1,5 @@
 package util;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -73,7 +71,7 @@ public class MathUtil {
         return result;
     }
 
-    public static @NotNull Map<Integer, Integer> factors(int n) {
+    public static Map<Integer, Integer> factors(int n) {
         var result = new HashMap<Integer, Integer>();
         var max = ceil(sqrt(n));
 
